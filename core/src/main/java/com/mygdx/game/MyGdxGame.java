@@ -14,6 +14,7 @@ public class MyGdxGame extends ApplicationAdapter {
 	public void create () {
 		batch = new SpriteBatch();
 		img = new Texture("badlogic.jpg");
+		Hoge hoge = new Hoge(3);
 	}
 
 	@Override
