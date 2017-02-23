@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.Texture
+import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.graphics.g2d.Sprite
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.maps.tiled.TiledMap
@@ -29,7 +30,7 @@ class MyGdxGame : ApplicationAdapter() {
 
     lateinit private var  camera: OrthographicCamera
 
-    lateinit var fieldModel: DisplayModel
+    lateinit var fieldModel: DisplayModel<Batch>
 //    lateinit var player: Player
 
     override fun create() {
@@ -63,7 +64,7 @@ class MyGdxGame : ApplicationAdapter() {
 
         sprite = Sprite(myAssets.texture, 16, 16)
 
-        fieldModel = DisplayModel(Rectangle(0f, 0f, 16*160f, 16*160f), {}, { batch, model ->
+        fieldModel = DisplayModel<Batch>(Rectangle(0f, 0f, 16*160f, 16*160f), {}, { batch, model ->
             var f = false
             if(batch.isDrawing) {
                 batch.end()
@@ -77,7 +78,7 @@ class MyGdxGame : ApplicationAdapter() {
             }
         })
 
-        var playerModel = DisplayModel(
+        var playerModel = DisplayModel<Batch>(
                 Rectangle(0f, 0f, 16f, 16f),
                 { it.rect.x++ },
                 { batch, model ->
