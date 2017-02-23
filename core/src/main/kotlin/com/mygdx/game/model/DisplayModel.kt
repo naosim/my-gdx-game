@@ -1,5 +1,6 @@
 package com.mygdx.game.model
 
+import com.badlogic.gdx.graphics.g2d.Batch
 import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.math.Vector2
 
@@ -9,7 +10,7 @@ import com.badlogic.gdx.math.Vector2
 class DisplayModel(
         var rect:Rectangle,
         var updateAction:((v: DisplayModel)->Unit)? = null,
-        var onAfterUpdateEvent:((v: DisplayModel)->Unit)? = null
+        var onAfterUpdateEvent:((batch:Batch, v: DisplayModel)->Unit)? = null
 ) {
     var parent: DisplayModel? = null
     val position: Vector2
@@ -36,9 +37,9 @@ class DisplayModel(
         children.forEach { it.update() }
     }
 
-    fun notifyAfterUpdate(){
-        onAfterUpdateEvent?.let { it.invoke(this) }
-        children.forEach { it.notifyAfterUpdate() }
+    fun notifyAfterUpdate(batch: Batch){
+        onAfterUpdateEvent?.let { it.invoke(batch, this) }
+        children.forEach { it.notifyAfterUpdate(batch) }
     }
 }
 

@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.graphics.OrthographicCamera
 import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.graphics.g2d.Sprite
-import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.maps.tiled.TiledMap
 import com.badlogic.gdx.maps.tiled.TiledMapTileLayer
@@ -22,7 +21,7 @@ class MyAssets {
 
 
 class MyGdxGame : ApplicationAdapter() {
-    internal lateinit var batch: SpriteBatch
+//    internal lateinit var batch: SpriteBatch
     lateinit var sprite: Sprite
     lateinit var s: Sprite
 
@@ -34,7 +33,7 @@ class MyGdxGame : ApplicationAdapter() {
 //    lateinit var player: Player
 
     override fun create() {
-        batch = SpriteBatch()
+        //batch = SpriteBatch()
         val hoge = Hoge(3)
 //        font = BitmapFont()
         println(Gdx.graphics.getWidth())
@@ -64,22 +63,29 @@ class MyGdxGame : ApplicationAdapter() {
 
         sprite = Sprite(myAssets.texture, 16, 16)
 
-        fieldModel = DisplayModel(Rectangle(0f, 0f, 16*160f, 16*160f), {}, {
+        fieldModel = DisplayModel(Rectangle(0f, 0f, 16*160f, 16*160f), {}, { batch, model ->
+            var f = false
+            if(batch.isDrawing) {
+                batch.end()
+                f = true
+            }
             renderer.setView(camera)
             renderer.render()
+
+            if(f) {
+                batch.begin()
+            }
         })
 
         var playerModel = DisplayModel(
                 Rectangle(0f, 0f, 16f, 16f),
                 { it.rect.x++ },
-                {
-                    sprite.x = it.positionOfWorld.x
-                    sprite.y = it.positionOfWorld.y
+                { batch, model ->
+                    sprite.x = model.positionOfWorld.x
+                    sprite.y = model.positionOfWorld.y
 
                     camera.position.x = sprite.x
                     camera.position.y = sprite.y
-
-
                     sprite.draw(batch)
                 }
         )
@@ -97,12 +103,12 @@ class MyGdxGame : ApplicationAdapter() {
 
         camera.update()
 
-        batch.setProjectionMatrix(camera.combined)
-        batch.begin()
+        renderer.batch.setProjectionMatrix(camera.combined)
+        renderer.batch.begin()
 
-        fieldModel.notifyAfterUpdate()
+        fieldModel.notifyAfterUpdate(renderer.batch)
 
-        batch.end()
+        renderer.batch.end()
     }
 
     override fun dispose() {
