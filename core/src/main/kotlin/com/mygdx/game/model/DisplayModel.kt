@@ -6,11 +6,11 @@ import com.badlogic.gdx.math.Vector2
 /**
  * rect: position from parent
  */
-class DisplayModel<T>(
-        var rect:Rectangle,
-        var updateAction:((v: DisplayModel<T>)->Unit)? = null,
-        var onAfterUpdateEvent:((t:T, v: DisplayModel<T>)->Unit)? = null
-) {
+open class DisplayModel<T>(
+        override var rect:Rectangle,
+        open var updateAction:((v: DisplayModel<T>)->Unit)? = null,
+        open var onAfterUpdateEvent:((t:T, v: DisplayModel<T>)->Unit)? = null
+): Body {
     var parent: DisplayModel<T>? = null
     val position: Vector2
         get() = Vector2(rect.x, rect.y)
@@ -41,6 +41,19 @@ class DisplayModel<T>(
         children.forEach { it.notifyAfterUpdate(t) }
     }
 }
+
+interface Body {
+    var rect:Rectangle
+    fun isTouchBottom(other: Body): Boolean = this.rect.y == other.rect.y + other.rect.height
+}
+
+interface StaticTiledMapBody {
+    var fieldMap: Array<Array<Int>>
+    var tileWidth: Int
+    var tileHeight: Int
+}
+
+class BodyImpl(override var rect: Rectangle) : Body
 
 
 interface DisplayModelListener {
