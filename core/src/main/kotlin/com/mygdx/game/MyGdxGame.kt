@@ -109,6 +109,7 @@ fun createPlayerBody(rect:Rectangle, world: World): Body{
     val bodyDef = BodyDef()
     bodyDef.type = BodyDef.BodyType.DynamicBody
     bodyDef.position.set(rect.x, rect.y)
+    bodyDef.fixedRotation = true
 
     // Create a body in the world using our definition
     val result = world.createBody(bodyDef)
@@ -123,7 +124,7 @@ fun createPlayerBody(rect:Rectangle, world: World): Body{
     fixtureDef.friction = 0f
     fixtureDef.restitution = 0f
 
-    val fixture = result.createFixture(fixtureDef)
+    result.createFixture(fixtureDef)
 
     // Shape is the only disposable of the lot, so get rid of it
     shape.dispose()
@@ -151,7 +152,7 @@ fun createStaticBody(rect:Rectangle, world: World): Body{
     fixtureDef.friction = 0f
     fixtureDef.restitution = 0f
 
-    val fixture = result.createFixture(fixtureDef)
+    result.createFixture(fixtureDef)
 
     // Shape is the only disposable of the lot, so get rid of it
     shape.dispose()
