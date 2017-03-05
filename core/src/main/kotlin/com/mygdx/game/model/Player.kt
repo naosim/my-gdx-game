@@ -22,7 +22,7 @@ class Player(
     })
     var contactContainerList = ContactContainerList()
 
-    var isAfterAction = false
+    var actionSleep = 0
 
     override var updateAction: ((DisplayModel<Batch>) -> Unit)? = {
         if(body.world.contactCount > 0) {
@@ -33,8 +33,8 @@ class Player(
                 }
         }
 
-        if(isAfterAction) {
-            isAfterAction = false
+        if(actionSleep > 0) {
+            actionSleep--
         } else {
             if(Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
                 body.setLinearVelocity(-40f, body.linearVelocity.y)
@@ -47,26 +47,29 @@ class Player(
 
             if(Gdx.input.isKeyPressed(Input.Keys.UP)) {
                 if(contactContainerList.touchStatus.bottom) {
-                    isAfterAction = true
+                    actionSleep = 5
                     body.setLinearVelocity(body.linearVelocity.x, 100f)
+                    println("jump")
                 } else {
                     if(contactContainerList.touchStatus.right) {
-                        isAfterAction = true
+                        actionSleep = 5
                         body.setLinearVelocity(-40f, 100f)
+                        println("right jump")
                     }else if(contactContainerList.touchStatus.left) {
-                        isAfterAction = true
+                        actionSleep = 5
                         body.setLinearVelocity(40f, 100f)
+                        println("left jump")
                     }
                 }
             } else {
                 if(contactContainerList.touchStatus.bottom) {
                     if(contactContainerList.touchStatus.right) {
-                        println("hit")
-                        isAfterAction = true
+                        println("right")
+                        actionSleep = 5
                         body.setLinearVelocity(-40f, body.linearVelocity.y)
                     }else if(contactContainerList.touchStatus.left) {
-                        println("hit")
-                        isAfterAction = true
+                        println("left")
+                        actionSleep = 5
                         body.setLinearVelocity(40f, body.linearVelocity.y)
                     }
                 }
