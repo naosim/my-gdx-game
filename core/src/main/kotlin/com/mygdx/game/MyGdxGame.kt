@@ -81,7 +81,7 @@ class MyGdxGame : ApplicationAdapter() {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
         // upate
 //        world.step(Gdx.graphics.getDeltaTime(), 6, 2)
-        world.step(1/60f, 6, 2)
+        world.step(1/60f, 1, 0)
 
 
         stage1.update()

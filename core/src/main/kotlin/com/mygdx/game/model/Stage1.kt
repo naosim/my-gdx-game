@@ -38,7 +38,7 @@ class Stage1(
                     .toTypedArray()
                     .map { it.trim().toCharArray() }
                     .map { it.map { c -> c.toInt() - 48 } }
-            
+
             ary.reversed().forEach { row ->
                 var x = 0
                 row.forEach { num ->

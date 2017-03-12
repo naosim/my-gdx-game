@@ -13,7 +13,11 @@ class ContactContainerList {
         if(mTouchStatus == null) {
             mTouchStatus = TouchStatus(
                     list.filter { it.contact.worldManifold.normal.y < -0.9 }.isNotEmpty(),
-                    list.filter { it.contact.worldManifold.normal.x < -0.9 }.isNotEmpty(),
+                    list.filter { it.contact.worldManifold.normal.x < -0.9 }.map{
+                        it.contact.worldManifold.points.forEach { println(it) }
+
+                        it
+                    }.isNotEmpty(),
                     list.filter { it.contact.worldManifold.normal.y >  0.9 }.isNotEmpty(),
                     list.filter { it.contact.worldManifold.normal.x >  0.9 }.isNotEmpty()
             )

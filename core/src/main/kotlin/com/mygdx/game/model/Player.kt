@@ -64,8 +64,9 @@ class Player(
             } else {
                 if(contactContainerList.touchStatus.bottom) {
                     if(contactContainerList.touchStatus.right) {
-                        println("right")
+                        println("right ${body.transform.position.y}")
                         actionSleep = 5
+//                        body.
                         body.setLinearVelocity(-40f, body.linearVelocity.y)
                     }else if(contactContainerList.touchStatus.left) {
                         println("left")
