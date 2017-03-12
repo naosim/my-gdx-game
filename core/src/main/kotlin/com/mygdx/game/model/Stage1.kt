@@ -17,6 +17,14 @@ class Stage1(
         val world: World
 ):DisplayModel<Batch>(Rectangle(0f, 0f, 16*160f, 16*160f)) {
     val renderer: OrthogonalTiledMapRenderer
+    val stageDef = """
+    0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000
+    1000110001100011000110001100011000110001100011000110001100011000110001100011000110001100011000110001
+    1000110001100011000110001100011000110001100011000110001100011000110001100011000110001100011000110001
+    1000110001100011000110001100011000110001100011000110001100011000110001100011000110001100011000110001
+    1111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111111
+    """
+
     init {
         val myAssets = MyAssets()
         val layer = setup(TiledMapTileLayer(160, 160, 16, 16), {
@@ -25,13 +33,13 @@ class Stage1(
                     setup(TiledMapTileLayer.Cell(), { it.tile = StaticTiledMapTile(myAssets.textureRegionList[0]) }),
                     setup(TiledMapTileLayer.Cell(), { it.tile = StaticTiledMapTile(myAssets.textureRegionList[1]) })
             )
-            arrayOf(
-                    arrayOf(0, 0, 0, 0, 0),
-                    arrayOf(1, 0, 0, 0, 1),
-                    arrayOf(1, 0, 0, 0, 1),
-                    arrayOf(1, 0, 0, 0, 1),
-                    arrayOf(1, 1, 1, 1, 1)
-            ).reversedArray().forEach { row ->
+
+            var ary =  stageDef.trim().split("\n")
+                    .toTypedArray()
+                    .map { it.trim().toCharArray() }
+                    .map { it.map { c -> c.toInt() - 48 } }
+            
+            ary.reversed().forEach { row ->
                 var x = 0
                 row.forEach { num ->
                     if(num != 0) {
